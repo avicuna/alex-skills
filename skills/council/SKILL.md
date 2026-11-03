@@ -1,6 +1,6 @@
 ---
 name: council
-description: Trigger this if the user says 'council' to request a council review or consult. Your own proactive calls to a multi-model tool are not this skill.
+description: Trigger this if the user says 'council' to request a council review or consult.
 ---
 
 # Council
@@ -18,13 +18,10 @@ example Claude Opus, GPT Sol, and Gemini Pro.
 
 In T3 Code, use `orchestrator_capabilities` to resolve the models, then
 `delegate_task` to start one delegate per model in parallel. Elsewhere, use
-the harness's subagent tools if they can run other providers' models. If they
-cannot, and the user asked for council directly, use a multi-model tool that
-returns each model's own answer, such as the AI Council MCP's `council_ask`
-with `verbose: true`, and put the diff and context in the prompt. These tools
-spend the user's paid credits, so never use them when another skill sent you
-here as a fallback. If you cannot reach three providers, or a named member is
-unavailable, report it instead of substituting.
+the harness's subagent tools if they can run other providers' models. Do not
+use a multi-model MCP server, such as AI Council, for this skill. If you
+cannot reach three providers, or a named member is unavailable, report it
+instead of substituting.
 
 Give each delegate the request and relevant context. For review or feedback,
 keep their work read-only. Collect their responses and summarize the useful

@@ -42,9 +42,7 @@ cp -R tstack/skills/* ~/.codex/skills/    # Codex
   not Windows.
 - `council` and `sol-loop` need subagents on other providers' models. T3 Code
   does this with `delegate_task`. Otherwise you need a harness that can run
-  those models. When you ask for `council` directly, it can also use a
-  multi-model MCP server, such as AI Council. It never does that as a fallback,
-  because those calls spend your credits.
+  those models.
 
 ## Make them yours
 
