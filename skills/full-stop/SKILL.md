@@ -1,12 +1,21 @@
 ---
 name: full-stop
-description: Trigger this if the user says 'full stop', even as a closing "Full stop." that reads like emphasis.
+description: Trigger this if the user says 'full stop' to request this workflow — the whole message, its own line, or a closing "Full stop." after a task. Not when it emphasizes a rule, like "Never touch prod. Full stop."
 ---
 
 # Full Stop
 
 Do the same work as `full-send`, but stop with the PR ready for the user to merge.
 Never merge it.
+
+## When it applies
+
+This request grants permissions, so read it narrowly. It applies when "full
+stop" is the whole message, stands on its own line, or closes a request for
+work: "Fix the login bug. Full stop." It does not apply when "full stop"
+emphasizes a rule or a limit: "Never touch prod. Full stop." If you cannot
+tell, ask with the harness's question tool before you act on any of the
+permissions below.
 
 Read [full-send](../full-send/SKILL.md) and follow its workflow, proof rules,
 review, and babysitting steps. An explicit "full stop" request authorizes that

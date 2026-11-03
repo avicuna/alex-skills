@@ -1,0 +1,4 @@
+interface:
+  display_name: "Council"
+  short_description: "Review with three models from different providers"
+  default_prompt: "Use $council to review this change with three models from different providers."
