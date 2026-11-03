@@ -12,8 +12,9 @@ PR still belongs in the product.
 
 ## Guardrails
 
-- Always check to make sure you have pulled latest origin for your branch, main
-  branch, and any other branch related to your work before starting.
+- Always `git fetch` the latest origin for your branch, the base branch, and
+  any other branch related to your work before starting. Fetch, do not pull:
+  pulling changes the user's worktree.
 - Treat existing worktree changes as user-owned. Use a disposable worktree when
   the active worktree is dirty or is being used for other work.
 - Modernizing authorizes rebasing and updating the PR branch. It does not

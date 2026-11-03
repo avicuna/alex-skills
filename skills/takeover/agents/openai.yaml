@@ -1,0 +1,4 @@
+interface:
+  display_name: "Takeover"
+  short_description: "Finish existing work and keep the original credit"
+  default_prompt: "Use $takeover to finish this PR, branch, or thread and keep the original credit."

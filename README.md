@@ -21,7 +21,8 @@ not.
 
 Some skills call others. Install the ones they need too:
 
-- `full-send` uses `sol-loop`, `file-pr`, and `babysit-pr`.
+- `full-send` uses `sol-loop`, `file-pr`, and `babysit-pr`, and `council` when
+  no route runs Sol.
 - `full-stop` uses `full-send`.
 - `takeover` uses `modernize`, `file-pr`, `babysit-pr`, and `leaving-pr-comments`.
 - `file-pr`, `babysit-pr`, and `modernize` use `leaving-pr-comments`.
@@ -29,7 +30,7 @@ Some skills call others. Install the ones they need too:
 ## Install
 
 ```bash
-git clone https://github.com/t3dotgg/tstack
+git clone https://github.com/avicuna/tstack
 cp -R tstack/skills/* ~/.claude/skills/   # Claude Code
 cp -R tstack/skills/* ~/.codex/skills/    # Codex
 ```
@@ -37,10 +38,13 @@ cp -R tstack/skills/* ~/.codex/skills/    # Codex
 ## Requirements
 
 - An authenticated [GitHub CLI](https://cli.github.com) (`gh`).
-- `python3` for `babysit-pr`'s `pr-wait` script.
+- `python3` for `babysit-pr`'s `pr-wait` script. It runs on macOS and Linux,
+  not Windows.
 - `council` and `sol-loop` need subagents on other providers' models. T3 Code
   does this with `delegate_task`. Otherwise you need a harness that can run
-  those models.
+  those models. When you ask for `council` directly, it can also use a
+  multi-model MCP server, such as AI Council. It never does that as a fallback,
+  because those calls spend your credits.
 
 ## Make them yours
 

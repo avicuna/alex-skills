@@ -10,9 +10,12 @@ Progress and errors that do not end the run go to stderr.
 
 --until
   green       required checks passed on the current head (every CI check when
-              the base branch requires none)
-  ready      green, Greptile or Macroscope reviewed the current head, and no
-              review thread is unresolved (default)
+              the base branch requires none, and nothing to wait for when no
+              check appears on the head for 3 polls in a row)
+  ready       green, Greptile or Macroscope reviewed the current head, and no
+              review thread is unresolved (default). On a repo where neither bot
+              reviewed this PR or any recent merged PR, green and no unresolved
+              thread is enough
   any-change  stop after the first poll that prints an event
 
 Exit codes
@@ -68,6 +71,9 @@ STATE_DIR = Path.home() / ".local" / "state" / "pr-wait"
 # instead of replaying hours of comments as new events.
 STALE_STATE_SECONDS = 6 * 3600
 MAX_FAILED_POLLS = 10
+# Checks register a few seconds after a push. With no check on the head for this
+# many polls in a row, the repo has no CI for this PR and nothing gates it.
+NO_CI_POLLS = 3
 TRANSIENT = re.compile(
     r"HTTP (5\d\d|429)|rate limit|timed? ?out|connection (reset|refused)|EOF|"
     r"temporar|could not resolve host|TLS handshake|Something went wrong",
@@ -95,6 +101,20 @@ query($owner: String!, $name: String!, $number: Int!) {
           isResolved path line
           comments(first: 100) { nodes { id url body author { login __typename } } }
         }
+      }
+    }
+  }
+}
+"""
+
+# Recent merged PRs show whether Greptile or Macroscope reviews this repo at all.
+BOT_HISTORY_QUERY = """
+query($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    pullRequests(last: 20, states: MERGED) {
+      nodes {
+        comments(last: 50) { nodes { author { login } } }
+        reviews(last: 50) { nodes { author { login } } }
       }
     }
   }
@@ -260,6 +280,8 @@ class Watcher:
         self.required: set[str] | None = None
         self.prev_snapshot: list[tuple[str, str]] | None = None
         self.pr_files: dict[str, set[str]] = {}
+        self.empty_polls: tuple[str, int] = ("", 0)  # (head, polls with no gating check)
+        self.bot_repo: bool | None = None
 
     def load(self) -> Json | None:
         try:
@@ -320,6 +342,29 @@ class Watcher:
                 checks[row["name"]] = row
         return checks
 
+    def repo_has_review_bot(self) -> bool:
+        """Whether Greptile or Macroscope reviewed any recent merged PR. Cached."""
+        if self.bot_repo is None:
+            try:
+                proc = gh([
+                    "api", "graphql", "-f", f"query={BOT_HISTORY_QUERY}",
+                    "-f", f"owner={self.owner}", "-f", f"name={self.name}",
+                ])
+                prs = json.loads(proc.stdout)["data"]["repository"]["pullRequests"]["nodes"]
+                logins = [
+                    who(node)[0]
+                    for pr in prs
+                    for node in pr["comments"]["nodes"] + pr["reviews"]["nodes"]
+                ]
+                self.bot_repo = any(bot_name(login) in GATING_BOTS for login in logins)
+            except (GhError, KeyError, TypeError, ValueError) as error:
+                # Unknown history: keep waiting for a bot rather than skip one.
+                log(f"could not read review-bot history, waiting for Greptile or Macroscope: {error}")
+                self.bot_repo = True
+            if not self.bot_repo:
+                log("no Greptile or Macroscope on recent merged PRs; ready does not wait for them")
+        return self.bot_repo
+
     def base_overlap(self, head: str, old: str, new: str) -> list[str]:
         """Files this PR touches that the new base commits also touch."""
         try:
@@ -366,6 +411,12 @@ class Watcher:
         # gates except the review bots' own checks.
         gate = self.required or {name for name in checks if not bot_name(name)}
         label = "required check" if self.required else "check"
+        if gate:
+            self.empty_polls = (head, 0)
+        else:
+            polls = self.empty_polls[1] + 1 if self.empty_polls[0] == head else 1
+            self.empty_polls = (head, polls)
+        no_ci = not gate and self.empty_polls[1] >= NO_CI_POLLS
 
         def bucket(name: str) -> str:
             return checks[name]["bucket"] if name in checks else "pending"
@@ -377,7 +428,7 @@ class Watcher:
                 fail_lines.append(f"{label} failed: {name} {link}")
                 self.emit(f"fail:{head}:{name}:{link}", fail_lines[-1])
         watched = {name: c for name, c in checks.items() if bot_name(name) not in ADVISORY_BOTS}
-        gate_done = bool(gate) and all(bucket(n) != "pending" for n in gate)
+        gate_done = no_ci or (bool(gate) and all(bucket(n) != "pending" for n in gate))
         all_done = gate_done and all(c["bucket"] != "pending" for c in watched.values())
         # Checks appear a few seconds after a push. Two identical polls in a row
         # guard against calling a half-registered set of checks finished.
@@ -417,6 +468,7 @@ class Watcher:
         # summary names the head.
         bot_status: dict[str, str] = {}
         reviewed: list[str] = []
+        gating_seen = False
         for bot in GATING_BOTS + ADVISORY_BOTS:
             own_checks = {name: c for name, c in checks.items() if bot_name(name) == bot}
             summaries = [c for c in comments if bot_name(who(c)[0]) == bot]
@@ -427,6 +479,7 @@ class Watcher:
             else:
                 done = on_head or any(short in s["body"] for s in summaries)
             seen = bool(own_checks or summaries or own_reviews)
+            gating_seen = gating_seen or (seen and bot in GATING_BOTS)
             if bot in ADVISORY_BOTS and own_checks:
                 desc = next(iter(own_checks.values()))
                 bot_status[bot] = f"{bot} {desc['description'] or desc['bucket']} (advisory)"
@@ -474,6 +527,12 @@ class Watcher:
                 self.emit(f"merge:{merge_state}:{head}:{base_oid}", line)
             self.state["merge_state"] = merge_state
 
+        # ready waits for Greptile or Macroscope only where they review this repo.
+        no_bots = (
+            self.until == "ready" and green and not reviewed and not gating_seen
+            and not self.repo_has_review_bot()
+        )
+
         # One summary line per head once all checks finish.
         counts: dict[str, int] = {}
         for c in watched.values():
@@ -482,11 +541,12 @@ class Watcher:
         parts = [
             ", ".join(f"{n} {b}" for b, n in sorted(counts.items()))
             + (f" ({', '.join(failed_names)})" if failed_names else ""),
+            "no CI checks reported" if no_ci else "",
             f"required {sum(bucket(n) in ('pass', 'skipping') for n in self.required)}/{len(self.required)} green"
             if self.required
             else "",
             ", ".join(bot_status[b] for b in GATING_BOTS + ADVISORY_BOTS if b in bot_status)
-            or "no Greptile or Macroscope yet",
+            or ("no Greptile or Macroscope on this repo" if no_bots else "no Greptile or Macroscope yet"),
             f"{len(unresolved)} unresolved threads",
             f"merge state {merge_state}",
         ]
@@ -504,7 +564,7 @@ class Watcher:
                 self.reported.add(checks_key)
                 self.finish(0, [f"green on {short}: {summary}{self.behind(base, base_oid, head)}"])
             # ready waits for Greptile or Macroscope, never for CodeRabbit.
-            if green and reviewed:
+            if green and (reviewed or no_bots):
                 if unresolved:
                     self.finish(1, [f"blocked by {len(unresolved)} unresolved threads on {short}: {' '.join(unresolved)}"])
                 if merge_state == "BEHIND":

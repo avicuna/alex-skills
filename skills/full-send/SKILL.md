@@ -46,7 +46,9 @@ one appears.
    smallest change that works. Fix the case that happened, not every case
    that could. If you are on the default branch, create a branch first.
 2. **Prove it.** Get proof for every change you made. See "Proof".
-3. **Get feedback.** Use the `sol-loop` skill to verify changes.
+3. **Get feedback.** Use the `sol-loop` skill to verify changes. If no route
+   runs Sol, use the `council` skill instead, through subagents only, and say
+   so in the report. Ask the user if neither can run.
 4. **File the PR** with the `file-pr` skill. Rebase onto the latest default
    branch first. Add one short line to the description that says how you proved
    the change.
@@ -88,8 +90,9 @@ Full confidence means all of these are true on the latest commit:
 - Review bots have finished, and each finding is fixed or dismissed with a
   written reason.
 - No human review still requests changes.
-- The branch is up to date with the default branch, and GitHub reports it as
-  mergeable.
+- GitHub reports the PR as mergeable, not BEHIND or DIRTY, and no base commits
+  that landed after the last green run touch this PR's files. If they do,
+  rebase, push, and wait for green again.
 
 Merge with the method the repo uses. Check the allowed methods and recent merged
 PRs. If the repo uses a merge queue or auto-merge, stay until GitHub reports the

@@ -49,14 +49,18 @@ met or the PR merges, 1 when it needs you (a required check failed, conflicts,
 unresolved threads, PR closed), and 2 on bad input.
 
 - `ready` (default): required checks green, Greptile or Macroscope reviewed the
-  head, and no unresolved threads. Use this to babysit.
-- `green`: required checks only. Use it when the repo has no Greptile or
-  Macroscope.
+  head, and no unresolved threads. Use this to babysit. On a repo where neither
+  bot reviewed this PR or any recent merged PR, it does not wait for them.
+- `green`: required checks only. It ignores review threads.
 - `any-change`: exit on the first event.
 
-In Claude Code, run it with the Monitor tool (`timeout_ms: 3600000`), so each
-line wakes you. Without a monitor, run it as one long command. It ends on its
-own.
+A repo with no CI counts as green once no check appears on the head for three
+polls in a row.
+
+In Claude Code, run it with the Monitor tool at its maximum `timeout_ms`
+(Monitor caps it at 30 minutes), so each line wakes you. When the monitor
+expires, start `pr-wait` again. Without a monitor, run it as one long command.
+It ends on its own.
 
 Start it again after you push, after you handle an exit 1, and after a resume.
 It remembers what it already reported, so nothing that arrived in between is
