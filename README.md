@@ -18,7 +18,7 @@ not.
 | `babysit-pr` | "babysit" | Watches a PR through CI and review bots, and fixes the real findings. |
 | `modernize` | "modernize" | Rebases an old PR and decides if it should still exist. |
 | `design-critique` | "design review" | Has Opus and Sol critique a screen, component, or flow like senior product designers, then merges their findings into one ranked report. |
-| `mockups` | "make mockups" | Turns inspiration images into four options to pick from, then a draft, a critique, and a final mockup. |
+| `mockups` | "make mockups" | Turns inspiration images into four options to pick from, then a draft, a critique, and a final mockup. Works for websites, app screens, and app icons, and finds inspiration on the web if you have none. |
 | `leaving-pr-comments` | (automatic) | Formats comments that an agent posts on your behalf. |
 
 Some skills call others. Install the ones they need too:
@@ -48,7 +48,8 @@ cp -R tstack/skills/* ~/.codex/skills/    # Codex
   need a harness that can run those models.
 - `mockups` puts mockups on a claude.ai Design canvas when the claude-artifacts
   connector is available, and writes local HTML files either way. A browser
-  tool lets it screenshot the draft for review.
+  tool lets it screenshot the draft for review, and web search plus a browser
+  tool let it find inspiration when you have none.
 
 ## Make them yours
 
