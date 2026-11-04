@@ -17,6 +17,7 @@ not.
 | `takeover` | "take over" | Finishes someone else's PR, branch, or agent thread, and keeps their credit. |
 | `babysit-pr` | "babysit" | Watches a PR through CI and review bots, and fixes the real findings. |
 | `modernize` | "modernize" | Rebases an old PR and decides if it should still exist. |
+| `design-critique` | "design review" | Critiques a screen, component, or flow like a senior product designer, with ranked, evidence-backed findings. |
 | `leaving-pr-comments` | (automatic) | Formats comments that an agent posts on your behalf. |
 
 Some skills call others. Install the ones they need too:
