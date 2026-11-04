@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Critique"
+  short_description: "Critique a UI like a senior product designer"
+  default_prompt: "Use $design-critique to review this screen."
