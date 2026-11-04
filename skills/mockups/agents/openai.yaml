@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mockups"
+  short_description: "Turn inspiration images into options, a critiqued draft, and a final mockup"
+  default_prompt: "Use $mockups to turn these inspiration images into website mockups."
