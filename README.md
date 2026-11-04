@@ -17,7 +17,7 @@ not.
 | `takeover` | "take over" | Finishes someone else's PR, branch, or agent thread, and keeps their credit. |
 | `babysit-pr` | "babysit" | Watches a PR through CI and review bots, and fixes the real findings. |
 | `modernize` | "modernize" | Rebases an old PR and decides if it should still exist. |
-| `design-critique` | "design review" | Critiques a screen, component, or flow like a senior product designer, with ranked, evidence-backed findings. |
+| `design-critique` | "design review" | Has Opus and Sol critique a screen, component, or flow like senior product designers, then merges their findings into one ranked report. |
 | `leaving-pr-comments` | (automatic) | Formats comments that an agent posts on your behalf. |
 
 Some skills call others. Install the ones they need too:
@@ -41,9 +41,9 @@ cp -R tstack/skills/* ~/.codex/skills/    # Codex
 - An authenticated [GitHub CLI](https://cli.github.com) (`gh`).
 - `python3` for `babysit-pr`'s `pr-wait` script. It runs on macOS and Linux,
   not Windows.
-- `council` and `sol-loop` need subagents on other providers' models. T3 Code
-  does this with `delegate_task`. Otherwise you need a harness that can run
-  those models.
+- `council`, `sol-loop`, and `design-critique` need subagents on other
+  providers' models. T3 Code does this with `delegate_task`. Otherwise you
+  need a harness that can run those models.
 
 ## Make them yours
 

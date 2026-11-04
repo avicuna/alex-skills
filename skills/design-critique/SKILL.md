@@ -32,6 +32,34 @@ to run it. Do not critique a design you have not seen.
 Ask about the product and the user's goal only if it changes the review and
 you cannot infer it. Otherwise state your assumption and continue.
 
+## Reviewers
+
+Two models from different providers review the same design on their own, and
+you merge what they find. Use the latest Claude Opus and GPT Sol at high
+reasoning effort, unless the user's instructions name other reviewers.
+
+1. **Collect the evidence once.** Take the screenshots and gather the relevant
+   files yourself. Save the screenshots to files, so both reviewers judge the
+   same states and widths.
+2. **Start the reviewers in parallel.** In T3 Code, call
+   `orchestrator_capabilities` to resolve the models, then use `delegate_task`
+   to start one read-only review delegate per model. Elsewhere, use the
+   harness's subagent tools if they can run both models. Do not use a
+   multi-model MCP server, such as AI Council. Give each reviewer the product
+   context, the absolute paths to the screenshots and files, and the sections
+   of this skill from "What to review" through "Each finding". Ask each one
+   for findings only, not the full report. Tell them not to edit anything or
+   start their own subagents.
+3. **Merge.** Check every finding against the evidence yourself, and drop the
+   ones the evidence does not support. Combine findings that describe the
+   same problem. A finding both reviewers raised on their own gets higher
+   confidence. When they disagree on severity, choose one and give the
+   reason. Keep a real disagreement in the report rather than hiding it.
+
+If a reviewer's model is unavailable, say so and continue with the other one.
+Do not substitute a different model. If neither can run, do the review
+yourself and say it had one reviewer.
+
 ## What to review
 
 1. **Visual hierarchy.** Is the primary action obvious? Is content ordered by
@@ -97,8 +125,10 @@ Rank by user impact. Do not inflate severity.
 
 ### Priority findings
 
-| Priority | Area | Finding | Severity | Impact |
-|---|---|---|---|---|
+| Priority | Area | Finding | Severity | Impact | Raised by |
+|---|---|---|---|---|---|
+
+`Raised by` names the reviewers, such as `Opus, Sol` or `Sol`.
 
 ### Detailed findings
 
