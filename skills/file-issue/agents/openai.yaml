@@ -1,0 +1,4 @@
+interface:
+  display_name: "File Issue"
+  short_description: "Turn a task you explain into a clean GitHub issue"
+  default_prompt: "Use $file-issue to turn this task into a GitHub issue."
