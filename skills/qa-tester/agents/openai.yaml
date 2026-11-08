@@ -1,0 +1,4 @@
+interface:
+  display_name: "QA Tester"
+  short_description: "Plan, run and report a QA pass on an app or PR"
+  default_prompt: "Use $qa-tester to QA test this app."
