@@ -6,7 +6,7 @@ Axis 2 reads a voice profile from `~/.claude/voice-profile.md` (Codex: `~/.codex
 
 Use writing you are sure you wrote yourself, without an AI drafting it. Personal chats, email, and old posts all work. Anything sent after you started drafting with AI is suspect: check each long message by hand and keep only the ones you wrote. In the original profile, 63% of the long-form sent messages turned out to be AI drafts, and two "habits" came from a single AI-written message.
 
-Don't build a personal profile from work messages. They belong to your employer, and they often name colleagues and customers.
+Work messages are fine as long as you scrub them before they leave your work computer. Swap every person, repo, service, ticket, customer, channel and URL for a placeholder like `<name>` or `<repo>` but leave the wording and punctuation alone. Your style comes from how you build sentences and not from the nouns.
 
 Aim for about 60 short messages and 20 or more long ones. Fewer is fine. Say how many you have, so the skill knows how much to trust them.
 
