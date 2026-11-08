@@ -108,4 +108,4 @@ Don't wait to be caught. Default to the simplest fix that matches how the user t
 ## Replies and command output
 
 - Keep routine replies brief: the result, the relevant validation, and any blocker. Expand when asked or when the task needs it.
-- For verbose noninteractive build and test commands, run them through `quiet-run NEW_LOG_PATH -- COMMAND [ARGS]` (in this repo's `bin/`) or save the full output to a file. On success, report the status and meaningful counts, skipped tests included. On failure, read the complete log and surface the relevant diagnostics. Keep the original exit status, and read more output whenever correctness depends on it.
+- For verbose noninteractive build and test commands, save the full output to a file. On success, report the status and meaningful counts, skipped tests included. On failure, read the complete log and surface the relevant diagnostics. Keep the original exit status, and read more output whenever correctness depends on it.

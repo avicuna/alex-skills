@@ -58,11 +58,6 @@ Some skills call others. Install the ones they need too:
 - `commands/as-alex.md` is the `/as-alex` slash command for Claude Code. It turns on
   `voice-rewrite`'s second axis. Codex picks it up from `/as-alex` at the start of
   a message.
-- `hooks/block-unresolved-flags.sh` is a PreToolUse hook that blocks a send while
-  the text still has a `[NEEDS NUMBER]` flag in it. Run
-  `hooks/test-block-unresolved-flags.sh` to test it.
-- `bin/quiet-run` runs a noisy build or test command, saves the full log, and
-  prints only the status and test counts unless it fails.
 
 ## Install
 
@@ -75,26 +70,10 @@ cp ~/dev/alex-skills/commands/as-alex.md ~/.claude/commands/
 
 Symlink a skill folder instead of copying it if you want `git pull` to update it.
 
-To use the hook, register it in `~/.claude/settings.json` for the tools that send
-messages for you, for example:
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "mcp__.*slack.*send.*|mcp__.*gmail.*send.*",
-        "hooks": [{ "type": "command", "command": "~/dev/alex-skills/hooks/block-unresolved-flags.sh" }]
-      }
-    ]
-  }
-}
-```
-
 ## Requirements
 
 - An authenticated [GitHub CLI](https://cli.github.com) (`gh`).
-- `python3` for `babysit-pr`'s `pr-wait` script, the hook, and
+- `python3` for `babysit-pr`'s `pr-wait` script and
   `engineering-investigation`'s report validator. `pr-wait` runs on macOS and
   Linux, not Windows.
 - `council`, `sol-loop`, and `design-critique` need subagents on other

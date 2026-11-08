@@ -46,7 +46,7 @@ Evidence for one of these doesn't prove the others. Each claim gets an ID and a 
 ## Writing
 
 - Anything that goes out under my name runs through `/as-alex` (the `voice-rewrite` skill with my voice turned on). Replies from an agent to me stay plain since getting a reply in my own voice is uncanny.
-- No invented numbers. A vague claim gets flagged as `[NEEDS NUMBER]`, and the hook in `hooks/` blocks a send that still has one.
+- No invented numbers. A vague claim gets flagged as `[NEEDS NUMBER]` and nothing gets sent until the flag is resolved.
 - I see a draft of anything external before it's sent.
 
 ## Working with agents

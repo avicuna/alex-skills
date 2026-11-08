@@ -135,6 +135,6 @@ Rationale: `references/design-notes.md`.
 3. Every unresolved `[NEEDS NUMBER]` gap, listed. **Prefix every unresolved
    flag with 🛑** — not just the first. The flag reads `🛑 [NEEDS NUMBER]`.
    **The canonical marker is the bracketed token `[NEEDS NUMBER]` itself**,
-   not 🛑 — the repo's `hooks/block-unresolved-flags.sh` matches on the bracket text.
+   not 🛑 — searches and send guards match on the bracket text.
    Never remove the bracket text while keeping only 🛑, or vice versa.
    Rationale: `references/design-notes.md`.

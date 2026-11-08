@@ -96,12 +96,4 @@ silent and only surfaces if someone happens to check the original input.
 
 ## Why `[NEEDS NUMBER]` is the canonical marker and 🛑 is not
 
-`hooks/block-unresolved-flags.sh` greps for the literal bracketed text
-`[NEEDS NUMBER]` -- that string, not the 🛑 emoji, is what the send-guard's
-coverage depends on. 🛑 is a visual aid layered on top for a human
-skimming a long reply; it was never meant to carry the guard's logic. Two
-representations of one contract are free to drift apart if either one is
-treated as optional -- an editor who "simplifies" by dropping the bracket
-text in favor of the emoji (or vice versa) would silently break the hook
-without breaking anything the model itself checks. Keep both, and keep the
-bracket text as the one the hook (and any future guard) matches on.
+The bracketed text is what a search or a send guard matches on. 🛑 is just a visual aid for someone skimming a long reply and was never meant to carry that logic. If either one gets treated as optional the two will drift apart so keep both and keep the bracket text as the one anything automated matches on.
