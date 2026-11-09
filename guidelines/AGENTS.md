@@ -82,7 +82,7 @@ Don't wait to be caught. Default to the simplest fix that matches how the user t
 
 ## Git and PRs
 
-- PR descriptions end with `file-pr`'s `Created with <model> in <harness>.` line and no other attribution: no harness "Generated with" footer. Commits keep the harness's `Co-Authored-By` trailer.
+- PR descriptions carry `file-pr`'s `Created with <model> in <harness>` attribution (as the closing line, or as the summary of the collapsed details block) and no other: no harness "Generated with" footer. Commits keep the harness's `Co-Authored-By` trailer.
 - Ticket IDs go only in PR titles, commit subjects and branch names. Never in code, comments, tests, changelogs or PR descriptions.
 - Every PR mention gets its full URL, every time. A bare `#123` isn't clickable outside the forge.
 - Don't commit specs, plans or design docs. Keep them in the repo's `notes/` folder, excluded with a `/notes/` line in `.git/info/exclude`.
