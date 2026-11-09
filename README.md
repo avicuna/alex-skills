@@ -42,8 +42,8 @@ Some skills call others:
 
 `brainstorming` and `writing-plans` started as trimmed versions of the
 [superpowers](https://github.com/obra/superpowers) skills with the same names.
-I still keep the superpowers plugin on for its other skills but my global rules
-tell agents to use my versions of these two.
+I've turned the superpowers plugin off: its session hook pushed every turn
+toward a skill and its copies of these two competed with mine.
 
 ## Guidelines
 
@@ -57,7 +57,9 @@ tell agents to use my versions of these two.
 ## How it's wired up on my machines
 
 Nothing gets copied over. Everything links back to this repo so a `git pull`
-updates both harnesses at once.
+updates both harnesses at once. [`install.sh`](install.sh) does all of the
+linking below in one go. Run it again after adding a skill or changing the
+guidelines.
 
 **Skills** are symlinked one folder at a time into both harnesses. Skills that
 only live on one machine sit next to them as normal folders.
@@ -73,7 +75,7 @@ done
 ln -sfn "$PWD/commands/as-alex.md" ~/.claude/commands/as-alex.md
 ```
 
-Run it again after adding a skill. If a skill is already there as a copied
+`install.sh` runs this loop. If a skill is already there as a copied
 folder you'll need to delete it first since `ln` won't replace a real directory.
 
 **Claude Code rules.** `~/.claude/CLAUDE.md` imports the guidelines, then adds
@@ -88,18 +90,25 @@ The sections below are personal to this machine. Where they differ from the
 guidelines, they win.
 
 ## Git
-## Skills
 ## Cloudflare
 ## AI Council
 ```
 
 **Codex rules.** Codex can't import files so `~/.codex/AGENTS.md` gets built
 from the guidelines plus my personal sections in `~/.codex/AGENTS.personal.md`.
-Whenever the guidelines change I rebuild it:
+`install.sh` rebuilds it, so rerun it whenever the guidelines change:
 
 ```bash
 cat ~/Dev/tstack/guidelines/AGENTS.md ~/.codex/AGENTS.personal.md > ~/.codex/AGENTS.md
 ```
+
+**Push guard.** [`hooks/pre-push`](hooks/pre-push) refuses any push to `main`
+or `master`, so the branch-and-PR rule holds even on repos where GitHub can't
+enforce branch protection. `install.sh` sets it globally with
+`git config --global core.hooksPath ~/Dev/tstack/hooks`. That setting makes git
+ignore `.git/hooks`, so the script runs a repo's own `pre-push` after its
+check. Other hook types in `.git/hooks` won't run while it's set, and a repo
+that sets its own `core.hooksPath` (husky does) skips the guard.
 
 **Voice profile.** `/as-alex` needs `~/.claude/voice-profile.md`. It holds real
 messages, so it stays out of this repo. `~/.codex/voice-profile.md` is a

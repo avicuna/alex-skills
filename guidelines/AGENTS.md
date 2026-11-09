@@ -9,6 +9,7 @@ This file and `MEMORY.md` load into every conversation. Keep them small; bloat d
 - **This file:** rules only (what the agent must DO). No reference info, project descriptions or knowledge.
 - **MEMORY.md:** a concise index of memory files, one line per entry, under 150 characters.
 - **memory/*.md:** knowledge and reference info, loaded on demand.
+- **A repo's `AGENTS.md`:** what any agent needs to work in that repo (build and test commands, invariants, gotchas). Commit it with a `CLAUDE.md` that holds only `@AGENTS.md`. Codex can't read Claude memory, so a repo fact kept only in memory never reaches a delegated job.
 
 Before adding a line here, ask: "Is this a rule, or is this knowledge?" Knowledge goes in a memory file.
 
@@ -50,7 +51,7 @@ Don't wait to be caught. Default to the simplest fix that matches how the user t
 
 - Match the surrounding code's formatting, method contracts, persistence, transaction and error-handling patterns. Keep payment and data fixes narrow. Explain any necessary deviation with concrete evidence before implementing it.
 - Reviews and debugging stay inside the task's scope. Act on regressions the change introduces, defects in its new code, and what the task asks for. A gap the base branch already has goes in one short "noted, out of scope" list, with no fix and no extra digging unless asked. Label every finding **regression** or **pre-existing**.
-- New features and logic need thorough tests. Mechanical changes (type widening, version bumps) get tests only where the compiler can't catch a regression.
+- New features and logic need thorough tests. A test counts only if it fails without the change. When the same agent wrote the code and its tests, check that before trusting a green run. Mechanical changes (type widening, version bumps) get tests only where the compiler can't catch a regression.
 - Fix the hard fails the plan requires. Polish, nits and optional tests go to a backlog, not new rounds of fixes.
 - Before treating code as someone else's, check its git log and CODEOWNERS. When you find a bug in code you don't own, report it to its owners; don't patch it in place.
 
@@ -65,7 +66,7 @@ Don't wait to be caught. Default to the simplest fix that matches how the user t
 ## Planning and delegation
 
 - When an approved spec exists, don't re-explore the code it mapped or re-debate its decisions. Go straight to the task breakdown, and keep each task a concrete action rather than a research prompt.
-- Hand implementation tasks from an approved plan to background Codex jobs, one task per job. The plan file is the handoff. Each task in it has: goal, context and decisions, files, acceptance criteria, out of scope, test command. Before delegating, write any decision made in chat since the plan was written into the plan file, and point the job at the plan by absolute path and task number.
+- Hand implementation tasks from an approved plan to background Codex jobs, one task per job. The plan file is the handoff. Each task in it has: goal, context and decisions, files, acceptance criteria (the behavior the tests must prove), out of scope, test command. Before delegating, write any decision made in chat since the plan was written into the plan file, and point the job at the plan by absolute path and task number.
 - Run each job in its own git worktree, never the checkout I'm editing.
 - A job ends by reporting files changed, commands run with results, deviations from the plan and why, and open questions. Fold the deviations back into the plan before the next task.
 - When a job finishes, judge the diff's size and new surface before its test results, then run the task's tests. If it ballooned a simple task, cut it back before showing me.
