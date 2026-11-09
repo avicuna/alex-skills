@@ -1,0 +1,18 @@
+#!/bin/sh
+# Installed globally via core.hooksPath, which makes git skip .git/hooks,
+# so a repo's own pre-push hook is chained at the end.
+input=$(cat)
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/master)
+      echo "pre-push: refusing to push to ${remote_ref#refs/heads/}. Push a branch and open a PR." >&2
+      exit 1 ;;
+  esac
+done <<INPUT
+$input
+INPUT
+repo_hook="$(git rev-parse --git-common-dir)/hooks/pre-push"
+if [ -x "$repo_hook" ]; then
+  printf '%s\n' "$input" | "$repo_hook" "$@" || exit $?
+fi
+exit 0
