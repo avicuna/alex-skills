@@ -50,6 +50,8 @@ Every plan starts with:
 
 **Goal:** [One sentence]
 
+**Done when:** [The spec's checks, copied over. The last task's test command proves them.]
+
 **Architecture:** [2-3 sentences about approach]
 
 **Tech Stack:** [Key technologies/libraries]

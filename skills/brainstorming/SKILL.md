@@ -20,13 +20,22 @@ Before deep-diving, assess scope. If the request spans multiple independent subs
 ## Process
 
 1. **Explore project context** — check relevant files, docs, recent commits. Look for what can be reused or deleted before proposing anything new.
-2. **Ask clarifying questions** — understand purpose, constraints, success criteria. Batch related questions together (2-3 per message is fine). Prefer multiple choice when possible.
+2. **Ask clarifying questions** — start with the outcome, not the task list: what should be true when this is done, who it's for, and how we'll check it. Then constraints. Batch related questions together (2-3 per message is fine). Prefer multiple choice when possible.
 3. **Propose 2-3 approaches** — with trade-offs and your recommendation. Lead with the simplest one that fits the problem as the user sees it.
 4. **Present design** — scale detail to complexity. A simple feature gets a short design. Cover: architecture, components, data flow, error handling, testing approach.
-5. **Write design doc** — save to `notes/<topic>-design-YYYY-MM-DD.md` in the repo. `notes/` stays out of git: add a `/notes/` line to `.git/info/exclude` before the first file. User or repo preferences for location override this default.
+5. **Write design doc** — open it with the four sections under "Spec Header", then the design. Save to `notes/<topic>-design-YYYY-MM-DD.md` in the repo. `notes/` stays out of git: add a `/notes/` line to `.git/info/exclude` before the first file. User or repo preferences for location override this default.
 6. **Quick sanity check** — scan for placeholders, contradictions, or missing requirements. Fix inline.
 7. **User reviews spec** — ask user to review before proceeding
 8. **Transition** — invoke writing-plans skill
+
+## Spec Header
+
+Every design doc starts with these, before any architecture:
+
+- **Goal** — the outcome in one or two sentences, in the user's words.
+- **Non-goals** — what this deliberately leaves out.
+- **Assumptions** — anything you filled in that the user didn't say. Each one is a guess until the user confirms it during review.
+- **Done when** — checks someone can run or observe. They're written before the build so the result is judged against them, not against whatever got built.
 
 ## Visual Questions
 
