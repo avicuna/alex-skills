@@ -111,6 +111,28 @@ ignore `.git/hooks`, so the script runs a repo's own `pre-push` after its
 check. Other hook types in `.git/hooks` won't run while it's set, and a repo
 that sets its own `core.hooksPath` (husky does) skips the guard.
 
+**Secrets guard.** [`claude-hooks/protect-secrets.sh`](claude-hooks/protect-secrets.sh)
+is a Claude Code `PreToolUse` hook. It blocks reads and edits of `.env` files
+(the `.env.example` kind are fine), anything in `~/.secrets/` or a `secrets/`
+folder, and plain force pushes. It checks Bash commands as well as the file
+tools, because a deny rule like `Read(./.env)` doesn't stop `cat .env`.
+`install.sh` links it to `~/.claude/hooks/`. It needs `jq`, and it only runs
+once `~/.claude/settings.json` has this:
+
+```json
+"hooks": {
+  "PreToolUse": [
+    {
+      "matcher": "Bash|Read|Edit|Write|NotebookEdit|Grep",
+      "hooks": [{ "type": "command", "command": "$HOME/.claude/hooks/protect-secrets.sh" }]
+    }
+  ]
+}
+```
+
+The Bash check matches on the command text, so it also stops harmless commands
+that only mention those names, like `cp .env.example .env`. Run those yourself.
+
 **Voice profile.** `/as-alex` needs `~/.claude/voice-profile.md`. It holds real
 messages, so it stays out of this repo. `~/.codex/voice-profile.md` is a
 symlink to it.
