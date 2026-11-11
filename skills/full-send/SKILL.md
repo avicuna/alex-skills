@@ -55,7 +55,10 @@ one appears.
    failures. Get proof for each fix before you push it.
 6. **Merge** when the merge gate passes.
 7. **Report** in your final message: the PR link, the merge commit, your proof,
-   and each decision you made for the user.
+   and each decision you made for the user. Open it with two or three plain
+   sentences on what changed and why, written for someone who hasn't read the
+   diff. The user wasn't watching, and this is how they keep up with their own
+   code.
 
 Stay active from step 1 to step 7. If you end your turn while checks or bots are
 pending, the work stops, because nobody will prompt you again. Wait with the
