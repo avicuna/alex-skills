@@ -1,0 +1,7 @@
+interface:
+  display_name: "Engineering Investigation"
+  short_description: "Produce evidence-backed decision-ready reports"
+  default_prompt: "Use $engineering-investigation to investigate this issue and prepare a decision-ready report plus stakeholder handoff."
+
+policy:
+  allow_implicit_invocation: true

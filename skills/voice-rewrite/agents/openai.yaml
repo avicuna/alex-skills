@@ -1,0 +1,4 @@
+interface:
+  display_name: "Voice Rewrite"
+  short_description: "Make drafted text stop reading like AI"
+  default_prompt: "Use $voice-rewrite to rewrite this draft so it doesn't read as AI-generated."
