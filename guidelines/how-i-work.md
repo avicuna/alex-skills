@@ -24,7 +24,7 @@ This is the process behind the rules in `AGENTS.md` and which skill I use at eac
 
 - A bug fix stays a bug fix. If it grows into hardening the subsystem next to it, the small fix ships now and the hardening gets its own ticket and PR, designed from scratch.
 - A review or debugging session labels each finding as a **regression** the change introduced or something **pre-existing**. Pre-existing gaps go in one short "noted, out of scope" list. Otherwise every review turns into a refactor.
-- Polish and nits go to a backlog. Only the hard fails the plan requires get fixed in the current round.
+- Polish and nits go to the backlog, which is the repo's GitHub issues. Only the hard fails the plan requires get fixed in the current round. `gh search issues --owner @me --state open` lists what's waiting across every repo, so there's no separate board to keep in sync.
 
 ## Investigations
 
@@ -52,6 +52,7 @@ Evidence for one of these doesn't prove the others. Each claim gets an ID and a 
 ## Working with agents
 
 - **Rules vs knowledge.** The global instructions file only holds rules. Knowledge goes in memory files that load on demand. A bloated instructions file gets followed less.
+- **Three homes for knowledge.** What an agent needs to work in one repo goes in that repo's `AGENTS.md`. What an agent should remember about me goes in memory. What I've learned that outlives a project goes in `~/dev/kb`, a plain git repo, so Claude and Codex can both read it and it's backed up. `notes/` is for working documents and isn't backed up.
 - **Subtract first.** Every plan task and agent brief starts by asking what can be reused or deleted. New machinery needs a reason.
 - **Ask everything up front** before leaving work unattended, so a run doesn't stall overnight on one permission prompt.
 - **Check, don't remember.** A background job's status comes from checking it, not from what I think I started.
@@ -64,5 +65,7 @@ Evidence for one of these doesn't prove the others. Each claim gets an ID and a 
 | Repos | `~/dev/<project>/` |
 | Specs, plans, investigations, drafts | `<project>/notes/`, excluded with `/notes/` in `.git/info/exclude` |
 | Worktrees | `<repo>/.claude/worktrees/` or `~/dev/.worktrees/`, removed after merge |
+| Backlog | the repo's GitHub issues |
+| Cross-project knowledge | `~/dev/kb/` |
 | Throwaway output | the session scratchpad |
 | Credentials | `~/.secrets/` (dir 700, files 600) |

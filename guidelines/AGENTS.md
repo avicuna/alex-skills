@@ -52,7 +52,7 @@ Don't wait to be caught. Default to the simplest fix that matches how the user t
 - Match the surrounding code's formatting, method contracts, persistence, transaction and error-handling patterns. Keep payment and data fixes narrow. Explain any necessary deviation with concrete evidence before implementing it.
 - Reviews and debugging stay inside the task's scope. Act on regressions the change introduces, defects in its new code, and what the task asks for. A gap the base branch already has goes in one short "noted, out of scope" list, with no fix and no extra digging unless asked. Label every finding **regression** or **pre-existing**.
 - New features and logic need thorough tests. A test counts only if it fails without the change. When the same agent wrote the code and its tests, check that before trusting a green run. Mechanical changes (type widening, version bumps) get tests only where the compiler can't catch a regression.
-- Fix the hard fails the plan requires. Polish, nits and optional tests go to a backlog, not new rounds of fixes.
+- Fix the hard fails the plan requires. Polish, nits and optional tests go to the backlog, not new rounds of fixes. The backlog is the repo's GitHub issues, filed with the `file-issue` skill.
 - Before treating code as someone else's, check its git log and CODEOWNERS. When you find a bug in code you don't own, report it to its owners; don't patch it in place.
 
 ## Evidence and status
@@ -103,6 +103,7 @@ Don't wait to be caught. Default to the simplest fix that matches how the user t
 
 - `~/dev` holds git repos and a few fixed folders. Never create loose files there.
 - Notes, plans, investigations and drafts for a project go in that project's `notes/` folder (git-excluded). Name them `<topic>-<what>-<YYYY-MM-DD>.md` and file them right away.
+- Knowledge that outlives one project (a lesson, a decision and its reason, a how-to) goes in `~/dev/kb`, one markdown file per topic, listed in its README. Read the README there before researching something I may have already worked out.
 - Throwaway output goes in the session scratchpad. Prune clones, builds and large outputs as each task finishes.
 - Credentials go in `~/.secrets/` (dir 700, files 600), never in a repo.
 
