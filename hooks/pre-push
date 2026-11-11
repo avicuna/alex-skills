@@ -2,9 +2,15 @@
 # Installed globally via core.hooksPath, which makes git skip .git/hooks,
 # so a repo's own pre-push hook is chained at the end.
 input=$(cat)
+zero=$(git hash-object --stdin </dev/null | tr '[:xdigit:]' 0)
 while read -r local_ref local_sha remote_ref remote_sha; do
   case "$remote_ref" in
     refs/heads/main|refs/heads/master)
+      # A new repo's first push has to create the default branch, so let it
+      # through when the remote has no branches at all.
+      if [ "$remote_sha" = "$zero" ] && [ -z "$(git ls-remote --heads "$2" 2>/dev/null)" ]; then
+        continue
+      fi
       echo "pre-push: refusing to push to ${remote_ref#refs/heads/}. Push a branch and open a PR." >&2
       exit 1 ;;
   esac
