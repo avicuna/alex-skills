@@ -1,4 +1,4 @@
 interface:
   display_name: "Handoff"
-  short_description: "Write a handoff capsule so another agent can pick up the work"
-  default_prompt: "Use $handoff to write the handoff capsule for this worktree."
+  short_description: "Hand the task to a new T3 thread, or write a capsule file"
+  default_prompt: "Use $handoff to hand this task to a new T3 Code thread."
