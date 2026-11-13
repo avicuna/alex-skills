@@ -13,6 +13,15 @@ This is the process behind the rules in `AGENTS.md` and which skill I use at eac
 7. **Watch it through** with `babysit-pr`. Fix the real findings and push back on the wrong ones.
 8. **Merge and watch the deploy.** `full-send` runs steps 5 through 8 on its own, and `full-stop` stops when the PR is ready for me to merge. A task isn't done until the deploy after merge is green.
 
+## Models and effort
+
+Higher effort pays off on hard, long coding work and barely moves research or questions. Running lower and re-running only the failures at a higher level keeps nearly the same pass rate for about half the cost, so effort goes up after something fails, not before. The research behind this is in `~/dev/kb/agent-workflow/model-routing-and-effort-2026-11-13.md`.
+
+- **My own sessions:** Opus at `high`. `xhigh` for a hard bug or an architecture question, `max` only for a single problem `high` already got wrong. Status checks, overviews and questions get `medium`.
+- **Codex jobs:** `medium`, on Terra for mechanical tasks and Sol for logic. A failed test or a review blocker sends the task back to Sol at `high`.
+- **Reviews:** `sol-loop` runs round 1 at `high` and later rounds at `medium`. `council` and `design-critique` run at `high`.
+- **Searching:** Haiku through the `Explore` subagent. It costs about a fortieth of Opus per token, and finding things doesn't need judgment.
+
 ## Debugging
 
 - **Reproduce it first.** A failing test on the base branch, or the raw log rows that show the failure. No fix from a guess.
