@@ -74,6 +74,13 @@ Don't wait to be caught. Default to the simplest fix that matches how the user t
 - Agents never push or open PRs from a delegated job. I do that after review.
 - Before I leave long agent work unattended, ask every decision and permission question up front so nothing stalls.
 
+## Models and effort
+
+- Set the effort on every delegate and subagent you start. Defaults differ by model, and GPT Sol's is `low`.
+- Codex implementation jobs start at `medium`: GPT Terra for mechanical tasks (renames, type widening, version bumps, code that follows an existing pattern), GPT Sol for anything with real logic. When a job's tests fail or review finds a blocker, re-run that task on Sol at `high`. Don't raise effort before something has failed.
+- Delegates for status checks, research and general questions run at `medium`.
+- In Claude Code, send read-only searches (finding code, reading logs, sweeping a directory) to the `Explore` subagent with `model: haiku`. A subagent that has to judge code gets Sonnet at `medium`.
+
 ## Multi-model review
 
 - Use a council review (the `council` skill) only for significant changes: new subsystems, security-sensitive or cross-service code. Routine changes rely on tests, lint and self-review.
