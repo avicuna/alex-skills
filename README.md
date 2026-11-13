@@ -27,7 +27,7 @@ why my checkout is still at `~/Dev/tstack`.
 | `engineering-investigation` | "investigate" | Writes an evidence-backed investigation report where every claim is labelled Proven, Derived, Hypothesis or Unknown. |
 | `qa-tester` | "QA this" | Tests an app or PR like a QA engineer: a test plan, a run through it and a bug report. |
 | `voice-rewrite` | "de-AI this" | Rewrites a draft so it stops reading like AI, or so it sounds like me with `/as-alex`. |
-| `handoff` | "handoff" | Writes a capsule so another agent or tool can pick up the work mid-task. |
+| `handoff` | "handoff" | Starts a new T3 Code thread with a handoff capsule, or writes the capsule to a file for another tool. |
 | `leaving-pr-comments` | (automatic) | Formats comments an agent posts on my behalf. |
 
 Some skills call others:
