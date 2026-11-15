@@ -4,8 +4,8 @@ These are the agent skills and engineering guidelines I use every day in Claude
 Code and Codex. Some of the skills use [T3 Code](https://github.com/pingdotgg/t3code)
 features when they're available and fall back to native tools when they aren't.
 
-It started as a fork of [tstack](https://github.com/t3dotgg/tstack), which is
-why my checkout is still at `~/Dev/tstack`.
+It started as a fork of [tstack](https://github.com/t3dotgg/tstack). My checkout
+lives at `~/Dev/alex-skills`.
 
 ## Skills
 
@@ -68,7 +68,7 @@ guidelines.
 only live on one machine sit next to them as normal folders.
 
 ```bash
-cd ~/Dev/tstack
+cd ~/Dev/alex-skills
 for h in ~/.claude/skills ~/.codex/skills; do
   mkdir -p "$h"
   for s in skills/*/; do
@@ -87,7 +87,7 @@ the rules that are only mine:
 ```markdown
 # Global Rules
 
-@~/Dev/tstack/guidelines/AGENTS.md
+@~/Dev/alex-skills/guidelines/AGENTS.md
 
 The sections below are personal to this machine. Where they differ from the
 guidelines, they win.
@@ -102,13 +102,13 @@ from the guidelines plus my personal sections in `~/.codex/AGENTS.personal.md`.
 `install.sh` rebuilds it, so rerun it whenever the guidelines change:
 
 ```bash
-cat ~/Dev/tstack/guidelines/AGENTS.md ~/.codex/AGENTS.personal.md > ~/.codex/AGENTS.md
+cat ~/Dev/alex-skills/guidelines/AGENTS.md ~/.codex/AGENTS.personal.md > ~/.codex/AGENTS.md
 ```
 
 **Push guard.** [`hooks/pre-push`](hooks/pre-push) refuses any push to `main`
 or `master`, so the branch-and-PR rule holds even on repos where GitHub can't
 enforce branch protection. `install.sh` sets it globally with
-`git config --global core.hooksPath ~/Dev/tstack/hooks`. That setting makes git
+`git config --global core.hooksPath ~/Dev/alex-skills/hooks`. That setting makes git
 ignore `.git/hooks`, so the script runs a repo's own `pre-push` after its
 check. Other hook types in `.git/hooks` won't run while it's set, and a repo
 that sets its own `core.hooksPath` (husky does) skips the guard.
