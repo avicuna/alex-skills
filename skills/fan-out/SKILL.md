@@ -106,7 +106,7 @@ Do not edit the plan file: several threads share it. Put deviations and anything
 record in your final message.
 
 ## Engineering rules (binding)
-<The Engineering principles from ~/Dev/tstack/guidelines/AGENTS.md, in five or six lines: repro
+<The Engineering principles from ~/Dev/alex-skills/guidelines/AGENTS.md, in five or six lines: repro
 first, root cause not guards, scoped PRs, subtract first, a test counts only if it fails without
 the change, comments only for a non-obvious why. Name the specific out-of-scope items this thread
 is most likely to be tempted by.>
