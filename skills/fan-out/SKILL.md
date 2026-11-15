@@ -192,9 +192,11 @@ merge gate tells you to rebase over. When a rebase conflicts in <shared file>, k
 lines. When it conflicts in logic, ask.
 
 <Contract consumer:> You rely on <contract> from Thread <X>, branch `<branch>`. <Full send: Don't
-merge until that PR has merged. Watch it with `babysit-pr`'s watcher, then rebase onto
-`<default branch>` and run the checks you couldn't run before. If it closes unmerged, ask. |
-Full stop: List the checks you couldn't run, and say they wait on Thread <X>'s PR.>
+merge until that PR has merged. Don't watch it; Thread <X> owns it. When yours is otherwise ready,
+unwatch it and ask with the question tool to be told when Thread <X>'s PR has merged. Then check
+its live state with `gh`, rebase onto `<default branch>`, run the checks you couldn't run before,
+and finish the merge gate. | Full stop: List the checks you couldn't run, and say they wait on
+Thread <X>'s PR.>
 
 End with the skill's report, plus: deviations from the plan and why, what is still owed, open
 questions.
