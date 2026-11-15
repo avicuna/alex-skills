@@ -1,6 +1,6 @@
 ---
 name: fan-out
-description: Split a plan or a list of fixes across independent T3 Code threads, each in its own worktree with a self-contained brief, so they can all run at once without stepping on each other. Use when the user says "fan out", or asks to hand tasks to their own threads, spin up threads for a plan, run tasks in parallel threads, or "fix 1, 2 and 4 in their own threads", even if they don't name this skill. Not for one task (use `handoff`), and not for subagents or delegates that report back to this thread.
+description: Split a plan or a list of fixes across independent T3 Code threads, each in its own worktree with a self-contained brief, so they can all run at once without stepping on each other. Use when the user says "fan out", or asks to hand tasks to their own threads, spin up threads for a plan, run tasks in parallel threads, or "fix 1, 2 and 4 in their own threads", even if they don't name this skill. Also use when they pair it with "full send" or "full stop", so each thread takes its own PRs to merged or ready. Not for one task (use `handoff`), and not for subagents or delegates that report back to this thread.
 ---
 
 # Fan out
@@ -11,6 +11,9 @@ each thread directly afterwards, so this is not delegation: you launch, report t
 A new thread starts with no memory of this conversation and a fresh checkout of the base branch.
 Everything below follows from that. Whatever a thread needs has to be in its brief or in a file the
 brief points at, and whatever two threads might both touch has to be settled before they start.
+
+If the user pairs the fan-out with "full send" or "full stop", read "Full send and full stop"
+(after step 4) before you start. It changes steps 3, 4 and 6.
 
 ## 1. Check you can do this
 
@@ -145,6 +148,63 @@ parallel threads fail in ways none of them can explain, so give each thread its 
 
 Never put credentials, tokens or connection strings in a brief.
 
+## Full send and full stop
+
+When the user pairs the fan-out with "full send" ("fan out the plan, full send"), each thread runs
+the `full-send` skill on its own PRs: proof, `sol-loop` review, `file-pr`, `babysit-pr`, merge.
+With "full stop", each thread runs `full-stop` and leaves its PRs ready to merge. Read the phrase
+as narrowly as those skills do. If it only stresses a rule ("never touch prod, full stop"), it is
+not a request. If you can't tell, ask.
+
+The request is for the threads, not for this one. This thread still launches, reports and stops.
+It doesn't run full-send on anything itself, and the grant reaches a thread only through its brief.
+
+What changes:
+
+- **Ask everything before launch.** Nobody will be watching the threads, and a thread that stalls
+  on a question waits until the user looks. Put every question you can foresee (go-aheads for the
+  steps a thread can run after the user says go, unclear scope) in one
+  `AskUserQuestion` call, and write each answer into the briefs it affects. For full send, also
+  show the grouping and confirm it whatever the thread
+  count: no one reviews these PRs before they merge, so a bad grouping lands on the default branch.
+- **Held-back work stays held back.** The grant covers each thread's own PRs and the tests they
+  need. It doesn't cover the steps step 3 holds back, and it doesn't cover a thread touching
+  another thread's PR.
+- **Hard limits.** Replace "no merges" with "Merge only your own PRs, and only when full-send's
+  merge gate passes." For full stop: "Never merge."
+- **Finish.** Replace the skeleton's Finish section with the one below.
+- **Last line.** End the brief with `Full send.` or `Full stop.` on its own line. Both skills only
+  grant their permissions on an explicit request, and to the thread the brief is the user's
+  message.
+
+```markdown
+## Finish
+Take each PR through the `<full-send | full-stop>` skill. I am not watching this thread; when that
+skill says to ask, use the question tool. One PR per task. <Branch name for each task.> Follow the
+repo's AGENTS.md and my global rules for branches and PR descriptions.
+
+<Stacked tasks:> Each PR targets the previous task's branch. <Full send: Merge bottom first. After a
+PR merges, retarget the next one to `<default branch>`, rebase, wait for green, and take it through
+the merge gate again. | Full stop: Leave the stack ready and give the merge order, bottom first.>
+
+Other threads merge into `<default branch>` while you work. Their merges are the base commits the
+merge gate tells you to rebase over. When a rebase conflicts in <shared file>, keep both sides'
+lines. When it conflicts in logic, ask.
+
+<Contract consumer:> You rely on <contract> from Thread <X>, branch `<branch>`. <Full send: Don't
+merge until that PR has merged. Watch it with `babysit-pr`'s watcher, then rebase onto
+`<default branch>` and run the checks you couldn't run before. If it closes unmerged, ask. |
+Full stop: List the checks you couldn't run, and say they wait on Thread <X>'s PR.>
+
+End with the skill's report, plus: deviations from the plan and why, what is still owed, open
+questions.
+```
+
+In step 6, drop the merge order from what needs the user (the threads merge themselves under full
+send) and say where results will show up: a merged PR, a ready PR, or a question waiting in the
+thread. The checks that need more than one thread's work, and the deploy after the last merge, are
+still owed.
+
 ## 5. Launch
 
 Send every `t3_thread_launch` call in one message so the threads start together.
@@ -183,7 +243,8 @@ Don't wait on the threads, poll them, or describe their progress.
 
 ## Later, when the user comes back
 
-- Read a thread with `t3_thread_read` before saying anything about its state.
+- Read a thread with `t3_thread_read` before saying anything about its state. After a full send,
+  check each PR's live state with `gh` too; don't take a thread's report as the merge.
 - Fold each thread's reported deviations and measurements into the plan file, since the threads
   were told not to edit it.
 - Run the checks that needed more than one thread's work, once those PRs are merged.

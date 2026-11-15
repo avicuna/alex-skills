@@ -13,6 +13,10 @@ its current state to a merged PR.
 If the user did not explicitly request "full send" in some clear way, do not
 assume full autonomy. If they did, everything below applies.
 
+If the request is to fan work out across threads ("fan out the plan, full
+send", or the same with "full stop"), run `fan-out` instead. This thread only
+launches the threads; each brief carries the request to its own thread.
+
 The user grants you permission to:
 
 - Merge the PR once the merge gate passes.
