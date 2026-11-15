@@ -65,6 +65,7 @@ Evidence for one of these doesn't prove the others. Each claim gets an ID and a 
 - **Subtract first.** Every plan task and agent brief starts by asking what can be reused or deleted. New machinery needs a reason.
 - **Ask everything up front** before leaving work unattended, so a run doesn't stall overnight on one permission prompt.
 - **Check, don't remember.** A background job's status comes from checking it, not from what I think I started.
+- **Fan out when tasks don't share files.** `fan-out` groups a plan's tasks by the files they touch and starts one T3 Code thread per group, each in its own worktree with a brief it can read cold.
 - **Hand off cleanly.** When I switch tools or sessions mid-task, `handoff` writes a capsule with the goal, the state, what was tried and why it failed, and the next action.
 
 ## Where things go

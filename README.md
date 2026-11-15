@@ -28,6 +28,7 @@ why my checkout is still at `~/Dev/tstack`.
 | `qa-tester` | "QA this" | Tests an app or PR like a QA engineer: a test plan, a run through it and a bug report. |
 | `voice-rewrite` | "de-AI this" | Rewrites a draft so it stops reading like AI, or so it sounds like me with `/as-alex`. |
 | `handoff` | "handoff" | Starts a new T3 Code thread with a handoff capsule, or writes the capsule to a file for another tool. |
+| `fan-out` | "fan out" | Splits a plan or a list of fixes across independent T3 Code threads, one worktree and one self-contained brief each. |
 | `leaving-pr-comments` | (automatic) | Formats comments an agent posts on my behalf. |
 
 Some skills call others:
@@ -39,6 +40,7 @@ Some skills call others:
 - `takeover` uses `modernize`, `file-pr`, `babysit-pr` and `leaving-pr-comments`.
 - `file-pr`, `babysit-pr` and `modernize` use `leaving-pr-comments`.
 - `brainstorming` hands off to `writing-plans` and offers `mockups` for visual questions.
+- `fan-out` uses `writing-plans` when the work has no plan file yet.
 - `qa-tester` can use `council` to review its test plan.
 
 `brainstorming` and `writing-plans` started as trimmed versions of the
