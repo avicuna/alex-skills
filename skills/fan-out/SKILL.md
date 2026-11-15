@@ -160,10 +160,11 @@ Send every `t3_thread_launch` call in one message so the threads start together.
   that aren't pushed.
 - `modelSelection`: omit it so the thread inherits yours. Pass it only when the user names a
   model or effort, as `{provider, instanceId, model, options: [{id: "effort", value: "high"}]}`.
-  Take the provider, instance and option ids from `orchestrator_capabilities` or from an earlier
-  launch result in this thread. Don't invent a model id. If the name the user gave matches one
-  listed model, use it and say which; if it could mean more than one, ask; if it isn't available,
-  say so.
+  Call `orchestrator_capabilities` and take the provider, instance, model and option ids from what
+  it lists. Pick the newest version of the model the user named ("Opus" means the latest Opus
+  listed) unless they gave a version. Don't write a model id from memory: ids go stale, and a
+  remembered one quietly pins the threads to an old model. Say which model you picked. If the
+  name could mean more than one family, ask; if it isn't available, say so.
 - Leave `projectId` and the mode fields unset so they inherit.
 
 ## 6. Report and stop
