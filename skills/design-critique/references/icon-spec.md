@@ -8,9 +8,10 @@ The numbers are a common starting point on a 24px grid. What matters is that
 the set picks one value per rule and every icon follows it. When a product
 already has its own values, review against those.
 
-1. **Box.** Every icon sits in the same square frame with the same padding,
-   such as a 24px box with a 20px live area (2px on each side). Export every
-   icon with that padding, never trimmed to its artwork.
+1. **Box.** Every icon sits in the same square frame with the same live
+   area, such as a 24px box with a 20px live area (at least 2px of padding
+   on each side). Export every icon at the full frame, never trimmed to its
+   artwork.
 2. **Optical size.** Shapes follow keylines so they carry the same visual
    weight: on a 24px grid, a 20px circle, an 18px square, and a 20×16px
    rectangle (16×20px upright). A circle drawn as wide as the square looks
@@ -18,7 +19,8 @@ already has its own values, review against those.
 3. **Stroke.** One stroke weight for the whole set, such as 2px at 24px.
    Mixed weights read as icons from different libraries.
 4. **Ends and corners.** One cap style (round or square), one corner radius
-   (such as 2px), and one angle for diagonals (such as 45°).
+   (such as 2px), and a standard angle (such as 45°) for diagonals whose
+   shape doesn't fix their own angle, unlike a triangle or a checkmark.
 5. **Fill logic.** Fill carries meaning, applied the same way everywhere, such
    as outlined for inactive and filled for selected. Fill used at random
    reads as a state change that didn't happen.
@@ -30,8 +32,8 @@ already has its own values, review against those.
    that lands on whole pixels.
 8. **Color.** A few named roles, such as default, selected, disabled, and
    error, not one-off colors. An icon that carries meaning needs at least 3:1
-   contrast against its background (WCAG 1.4.11), and an icon-only control
-   needs an accessible name.
+   contrast against its background (WCAG 1.4.11; disabled controls are
+   exempt), and an icon-only control needs an accessible name.
 
 ## Reviewing a set against it
 
