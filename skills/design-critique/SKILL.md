@@ -47,7 +47,8 @@ reasoning effort, unless the user's instructions name other reviewers.
    harness's subagent tools if they can run both models. Do not use a
    multi-model MCP server, such as AI Council. Give each reviewer the product
    context, the absolute paths to the screenshots and files, and the sections
-   of this skill from "What to review" through "Each finding". Ask each one
+   of this skill from "What to review" through "Each finding" (plus the
+   absolute path to the icon spec when the design has UI icons). Ask each one
    for findings only, not the full report. Tell them not to edit anything or
    start their own subagents.
 3. **Merge.** Check every finding against the evidence yourself, and drop the
@@ -71,6 +72,8 @@ yourself and say it had one reviewer.
 4. **Color and contrast.** Contrast, semantic color, emphasis, surface and
    background relationships.
 5. **Components.** Consistency, states, affordances, reuse, visual patterns.
+   When the design uses a set of UI icons, review them against
+   [references/icon-spec.md](references/icon-spec.md).
 6. **Interaction.** Discoverability, feedback, error prevention, expected
    behavior, cognitive load.
 7. **Usability.** Clarity, learnability, efficiency, error recovery, effort.
