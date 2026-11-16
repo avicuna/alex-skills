@@ -105,7 +105,8 @@ not copy. Give each option a short name that says the direction, like
 Follow good craft in every option: real `<button>`, `<a>`, and `<label>`
 elements, text contrast of at least 4.5:1, and touch targets of at least
 44px. An icon must still read at 16px; avoid text in it except a single
-glyph.
+glyph. UI icons inside a website or app screen follow the eight rules in
+[design-critique's icon spec](../design-critique/references/icon-spec.md).
 
 Present the options with the canvas link or the file paths. For each one,
 write one line on the direction and which inspiration it draws from. If you
