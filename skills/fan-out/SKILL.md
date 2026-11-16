@@ -43,6 +43,17 @@ is open in PRs, and whether the work depends on anything unpushed or uncommitted
 does not get uncommitted edits. If a thread needs an unpushed commit, give it the SHA to
 cherry-pick (worktrees share the object store) or base it on the local branch.
 
+Check that nobody has started this work already. Another thread may have launched the same tasks
+(a planning thread, or an earlier fan-out the user has lost track of). Look for each task in two
+places: live threads (`t3_thread_search` with the task's title and its planned branch), and the
+planned branch itself (`git branch --list <branch>` and `git ls-remote --heads origin <branch>`).
+T3 Code creates the branch when it sets up the worktree. If the branch already exists, the thread
+fails before it starts.
+
+- **A live thread owns the task:** don't launch it again. Put that thread's link in the report.
+- **The branch exists but no live thread owns it** (merged or abandoned): use a new branch name.
+  Don't delete the old branch.
+
 Check the untracked inputs too. A plan in a git-excluded `notes/` folder, generated assets and
 local data files are not in a fresh worktree either. Point briefs at them by absolute path, and
 say whether to read them in place or copy them in.
@@ -217,8 +228,8 @@ Send every `t3_thread_launch` call in one message so the threads start together.
 - `clientRequestId`: a stable slug such as `cloud-plan-b-backend`, so a retry doesn't start a
   second thread.
 - `workspaceStrategy`: `{type: "worktree", baseRef: "origin/<default branch>",
-  startFromOrigin: true, branch: "<type>/<short-description>"}`. This is the branch for the
-  thread's first task; the brief names the branches for the rest. Use the local base with `startFromOrigin: false` only when the thread needs commits
+  startFromOrigin: true, branch: "<type>/<short-description>"}`. Use a branch that step 2 found
+  free, both locally and on origin. This is the branch for the thread's first task; the brief names the branches for the rest. Use the local base with `startFromOrigin: false` only when the thread needs commits
   that aren't pushed.
 - `modelSelection`: omit it so the thread inherits yours. Pass it only when the user names a
   model or effort, as `{provider, instanceId, model, options: [{id: "effort", value: "high"}]}`.
