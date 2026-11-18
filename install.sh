@@ -15,6 +15,7 @@ ln -sfn "$repo/commands/as-alex.md" "$HOME/.claude/commands/as-alex.md"
 
 mkdir -p "$HOME/.claude/hooks"
 ln -sfn "$repo/claude-hooks/protect-secrets.sh" "$HOME/.claude/hooks/protect-secrets.sh"
+ln -sfn "$repo/claude-hooks/protect-laws.sh" "$HOME/.claude/hooks/protect-laws.sh"
 
 if [ -f "$HOME/.codex/AGENTS.personal.md" ]; then
   cat guidelines/AGENTS.md "$HOME/.codex/AGENTS.personal.md" > "$HOME/.codex/AGENTS.md"
@@ -23,4 +24,4 @@ else
 fi
 
 git config --global core.hooksPath "$repo/hooks"
-echo "Linked skills and the secrets guard, rebuilt ~/.codex/AGENTS.md, set core.hooksPath to $repo/hooks"
+echo "Linked skills, the secrets guard and the laws guard, rebuilt ~/.codex/AGENTS.md, set core.hooksPath to $repo/hooks"

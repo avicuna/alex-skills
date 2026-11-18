@@ -136,6 +136,26 @@ once `~/.claude/settings.json` has this:
 The Bash check matches on the command text, so it also stops harmless commands
 that only mention those names, like `cp .env.example .env`. Run those yourself.
 
+**Laws guard.** [`claude-hooks/protect-laws.sh`](claude-hooks/protect-laws.sh)
+is a second `PreToolUse` hook. It keeps agents from editing the property tests
+they are checked against: anything under a repo's `tests/laws/` folder. File
+tools are blocked outright. Bash commands that mention `tests/laws` are blocked
+when they redirect into it or edit, move, delete or restore files; reading and
+running the laws is fine. To change a law with Claude, start that session with
+`ALLOW_LAW_EDITS=1`; an agent can't set it from its own shell. `install.sh` links
+it next to the secrets guard, and it runs once its command sits beside the
+secrets guard's in the same `hooks` list:
+
+```json
+"hooks": [
+  { "type": "command", "command": "$HOME/.claude/hooks/protect-secrets.sh" },
+  { "type": "command", "command": "$HOME/.claude/hooks/protect-laws.sh" }
+]
+```
+
+It only covers Claude Code. Codex jobs don't run these hooks, so review any diff
+that touches `tests/laws/`.
+
 **Voice profile.** `/as-alex` needs `~/.claude/voice-profile.md`. It holds real
 messages, so it stays out of this repo. `~/.codex/voice-profile.md` is a
 symlink to it.
