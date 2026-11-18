@@ -20,6 +20,13 @@ case "$tool" in
       tests/laws/*|*/tests/laws/*) block "$path is a law" ;;
     esac
     ;;
+  apply_patch)
+    # Codex edits files with a patch whose header lines name each file.
+    patch=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
+    if printf '%s\n' "$patch" | grep -Eq '^\*\*\* (Add File|Update File|Delete File|Move to): (.*/)?tests/laws/'; then
+      block "the patch changes a law"
+    fi
+    ;;
   Bash)
     cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
     printf '%s' "$cmd" | grep -q 'tests/laws' || exit 0

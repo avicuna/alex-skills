@@ -16,6 +16,8 @@ ln -sfn "$repo/commands/as-alex.md" "$HOME/.claude/commands/as-alex.md"
 mkdir -p "$HOME/.claude/hooks"
 ln -sfn "$repo/claude-hooks/protect-secrets.sh" "$HOME/.claude/hooks/protect-secrets.sh"
 ln -sfn "$repo/claude-hooks/protect-laws.sh" "$HOME/.claude/hooks/protect-laws.sh"
+mkdir -p "$HOME/.codex"
+ln -sfn "$repo/codex-hooks/hooks.json" "$HOME/.codex/hooks.json"
 
 if [ -f "$HOME/.codex/AGENTS.personal.md" ]; then
   cat guidelines/AGENTS.md "$HOME/.codex/AGENTS.personal.md" > "$HOME/.codex/AGENTS.md"

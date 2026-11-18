@@ -153,8 +153,15 @@ secrets guard's in the same `hooks` list:
 ]
 ```
 
-It only covers Claude Code. Codex jobs don't run these hooks, so review any diff
-that touches `tests/laws/`.
+Codex runs the same script. [`codex-hooks/hooks.json`](codex-hooks/hooks.json)
+registers it for Codex's `Bash` and `apply_patch` tools, and `install.sh` links
+it to `~/.codex/hooks.json`. Codex skips a hook until you trust it, and skips it
+again whenever its definition changes, so after installing or changing it run
+`codex`, open `/hooks` and trust it. Until then Codex jobs can edit the laws,
+so review any diff that touches `tests/laws/`.
+
+The test cases are in `claude-hooks/protect-laws.test.sh`; run it with the
+script's path as its argument.
 
 **Voice profile.** `/as-alex` needs `~/.claude/voice-profile.md`. It holds real
 messages, so it stays out of this repo. `~/.codex/voice-profile.md` is a
