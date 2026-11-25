@@ -13,9 +13,10 @@ its current state to a merged PR.
 If the user did not explicitly request "full send" in some clear way, do not
 assume full autonomy. If they did, everything below applies.
 
-If the request is to fan work out across threads ("fan out the plan, full
-send", or the same with "full stop"), run `fan-out` instead. This thread only
-launches the threads; each brief carries the request to its own thread.
+If the request is to fan work out across multiple tasks ("fan out the plan,
+full send", or the same with "full stop"), run `fan-out` instead. Subagents
+implement and prove the tasks in parallel worktrees, and this session handles
+review, PR filing, babysitting, and merges for all of them.
 
 The user grants you permission to:
 

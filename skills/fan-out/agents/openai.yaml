@@ -1,4 +1,4 @@
 interface:
   display_name: "Fan Out"
-  short_description: "Split a plan across independent T3 threads, one worktree each"
-  default_prompt: "Use $fan-out to hand these tasks to their own T3 Code threads."
+  short_description: "Split a plan across parallel subagents in one session, one worktree each"
+  default_prompt: "Use $fan-out to run these tasks in parallel subagents inside this session."
