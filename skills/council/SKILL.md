@@ -11,17 +11,27 @@ fixes until reviews return. If the user wants to discard the implementation
 and explore new ideas, skip fixes to code being replaced.
 
 Bring in three delegates to help with the user's request, usually for review
-or feedback. Use one strong model from each of three different providers, at
-high reasoning effort. If the user's instructions name council members, use
-those. Otherwise pick the latest flagship model from each provider, for
-example Claude Opus, GPT Sol, and Gemini Pro.
+or feedback: one strong model each from Claude, Codex, and Google, at high
+reasoning effort. If the user's instructions name council members, use those.
+Otherwise pick the latest flagship model from each of the three providers:
 
-In T3 Code, use `orchestrator_capabilities` to resolve the models, then
-`delegate_task` to start one delegate per model in parallel. Elsewhere, use
-the harness's subagent tools if they can run other providers' models. Do not
-use a multi-model MCP server, such as AI Council, for this skill. If you
-cannot reach three providers, or a named member is unavailable, report it
-instead of substituting.
+- **Claude** (`claudeAgent`): latest Claude Opus.
+- **Codex** (`codex`): latest GPT Sol.
+- **Google** (`antigravity`, or a Google/Gemini provider if present): latest
+  flagship Gemini model (the top non-Flash, non-Orchestrator `gemini-*` model,
+  e.g. Gemini 4 Neon). Ignore non-Gemini models listed under Antigravity (such
+  as Claude or GPT-OSS) so each seat stays on its own model family.
+
+In T3 Code, call `orchestrator_capabilities` to resolve current model IDs and
+effort option names rather than hardcoding versions, then use `delegate_task`
+to start one delegate per model in parallel. Set high reasoning effort on every
+delegate via `target.options` using the option the capabilities list for that
+provider (`effort: "high"` on Claude, `reasoningEffort: "high"` on Codex,
+`thought_level: "high"` on Antigravity); defaults differ by model, and Codex
+Sol defaults to `low`. Elsewhere, use the harness's subagent tools if they can
+run all three providers' models. Do not use a multi-model MCP server, such as
+AI Council, for this skill. If any of the three providers or a named member is
+unavailable, report it instead of substituting.
 
 Give each delegate the request and relevant context. For review or feedback,
 keep their work read-only. Collect their responses and summarize the useful
@@ -45,7 +55,7 @@ Rounds: 2
 | --- | --- | --- |
 | Claude Opus | 7/10 | 9/10 |
 | GPT Sol | 8/10 | 10/10 |
-| Gemini Pro | 7/10 | 9/10 |
+| Gemini 4 Neon | 7/10 | 9/10 |
 ```
 
 If a delegate gives no score, write `no score`. Do not invent one.
