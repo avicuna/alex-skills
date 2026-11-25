@@ -28,7 +28,7 @@ lives at `~/Dev/alex-skills`.
 | `qa-tester` | "QA this" | Tests an app or PR like a QA engineer: a test plan, a run through it and a bug report. |
 | `voice-rewrite` | "de-AI this" | Rewrites a draft so it stops reading like AI, or so it sounds like me with `/as-alex`. |
 | `handoff` | "handoff" | Starts a new T3 Code thread with a handoff capsule, or writes the capsule to a file for another tool. |
-| `fan-out` | "fan out" | Splits a plan or a list of fixes across independent T3 Code threads, one worktree and one self-contained brief each. Add "full send" or "full stop" and each thread takes its own PRs to merged or ready. |
+| `fan-out` | "fan out" | Splits a plan or a list of fixes across parallel subagents in one session, one worktree and one self-contained brief each. Add "full send" or "full stop" and this session takes each task's PR to merged or ready. |
 | `leaving-pr-comments` | (automatic) | Formats comments an agent posts on my behalf. |
 
 Some skills call others:
@@ -40,8 +40,10 @@ Some skills call others:
 - `takeover` uses `modernize`, `file-pr`, `babysit-pr` and `leaving-pr-comments`.
 - `file-pr`, `babysit-pr` and `modernize` use `leaving-pr-comments`.
 - `brainstorming` hands off to `writing-plans` and offers `mockups` for visual questions.
-- `fan-out` uses `writing-plans` when the work has no plan file yet, and has
-  each thread run `full-send` or `full-stop` when I ask for one.
+- `fan-out` uses `writing-plans` when the work has no plan file yet, and pairs
+  with `full-send` or `full-stop` when I ask for one (subagents implement and
+  prove in parallel while the parent session runs `sol-loop`, `file-pr`,
+  `babysit-pr` and merges).
 - `qa-tester` can use `council` to review its test plan.
 
 `brainstorming` and `writing-plans` started as trimmed versions of the
